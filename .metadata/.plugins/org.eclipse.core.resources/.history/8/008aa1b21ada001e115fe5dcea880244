@@ -1,0 +1,30 @@
+package com.example.demo.client;
+
+import org.apache.http.HttpHeaders;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+
+public class DriverServiceClient {
+
+    public void getDriverDetails(String token) {
+        // Prepare the request
+        HttpGet request = new HttpGet("http://localhost:8081/api/driver/viewdriver/1");
+        
+        // Set Authorization header with JWT token
+        request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+
+        // Send the request
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpClient.execute(request)) {
+
+            // Handle response
+            System.out.println(response.getStatusLine());
+            // Process the response body as needed
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

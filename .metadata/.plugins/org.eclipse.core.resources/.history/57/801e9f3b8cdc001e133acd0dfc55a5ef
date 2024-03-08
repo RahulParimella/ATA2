@@ -1,0 +1,58 @@
+package com.javatechie.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.javatechie.dto.UserCredentialDto;
+import com.javatechie.entity.UserCredential;
+import com.javatechie.repository.UserCredentialRepository;
+
+@Service
+public class AuthService {
+
+	@Autowired
+	private UserCredentialRepository repository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private JwtService jwtService;
+
+	@Autowired
+	private ModelMapper modelMapper;
+	boolean flag;
+
+	public String save(UserCredentialDto userCredentialDto) {
+		// Check if the user already exists
+		boolean userExists = repository.existsByName(userCredentialDto.getName());
+
+		if (userExists) {
+			return "User already exists";
+		} else {
+			// Map UserCredentialDto to UserCredential
+			UserCredential userCredential = modelMapper.map(userCredentialDto, UserCredential.class);
+
+			// Encode the password
+			userCredential.setPassword(passwordEncoder.encode(userCredentialDto.getPassword()));
+
+			// Save the user credential
+			repository.save(userCredential);
+
+			return "Saved User";
+		}
+	}
+
+	public String generateToken(String username) {
+		return jwtService.generateToken(username);
+	}
+
+	public void validateToken(String token) {
+		jwtService.validateToken(token);
+	}
+
+}

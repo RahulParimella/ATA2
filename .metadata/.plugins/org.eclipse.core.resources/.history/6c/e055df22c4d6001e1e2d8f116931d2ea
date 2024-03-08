@@ -1,0 +1,39 @@
+package com.example.vehicle.exception;
+
+import java.util.Date;
+
+public class VehcleException {
+
+	
+	private Date timestamp;
+	
+	private String message;
+	
+	private String details;
+
+	public VehcleException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public VehcleException(Date timestamp, String message, String details) {
+		super();
+		this.timestamp = timestamp;
+		this.message = message;
+		this.details = details;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public String getDetails() {
+		return details;
+	}
+	
+	
+}

@@ -1,0 +1,5 @@
+package com.example.adminservice.repository;
+
+public interface AdminRepository {
+
+}

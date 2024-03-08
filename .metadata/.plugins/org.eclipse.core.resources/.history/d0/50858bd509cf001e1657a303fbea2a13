@@ -1,0 +1,11 @@
+package com.example.ata.model;
+
+import java.util.Date;
+
+public class Booking {
+	private Date journeyDate;
+	private String source;
+	private String destination;
+	private String vehicleName;
+	
+}

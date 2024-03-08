@@ -1,0 +1,101 @@
+package com.example.adminservice.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.example.adminservice.dto.DriverDto;
+import com.example.adminservice.dto.RouteDto;
+import com.example.adminservice.dto.VehicleDto;
+import com.example.adminservice.service.DriverService;
+import com.example.adminservice.service.RouteService;
+import com.example.adminservice.service.VehicleService;
+
+public class AdminController {
+
+	
+	@Autowired
+	private DriverService driverService;
+	@Autowired
+	private RouteService routeService;
+	@Autowired
+	private VehicleService vehicleService;
+	@PostMapping("/add_driver")
+	public DriverDto addDriver(@RequestBody DriverDto driverDto) {
+		return driverService.save(driverDto);
+		
+	}
+	@DeleteMapping("/delete_driver/{driverNo}")
+	public String deleteDriver(@PathVariable  int driverNo) {
+		return driverService.deleteDriver(driverNo);
+		
+	}
+	@PutMapping("/updatedriver/{driverNo}")
+	public String updateDriver( @PathVariable int driverNo,@RequestBody DriverDto driverDto) {
+		return driverService.updateDriver(driverNo, driverDto);
+		
+	}
+	@GetMapping("/viewdriver/{driverNo}")
+	public DriverDto viewDriver(@PathVariable int driverNo) {
+		return driverService.viewDriverById(driverNo);
+		
+	}
+	
+	//-----Route------
+	@PostMapping("/addroute")
+	public RouteDto addRoute(@RequestBody RouteDto routeDto) {
+		return routeService.addRoute(routeDto);
+		
+	}
+	
+	@PutMapping("/modifyroute/{routeId}")
+	public String modifyRoute(@PathVariable int routeId,@RequestBody RouteDto routeDto) {
+		return routeService.modifyRoute(routeId, routeDto);
+		
+	}
+	
+	@DeleteMapping("/deleteroute/{routeId}")
+	public String deleteRoute(@PathVariable int routeId) {
+		return routeService.deleteRoute(routeId);
+		
+	}
+	@GetMapping("/routeid/{routeId}")
+	public RouteDto viewRoutesById(@PathVariable("routeId") int routeId){
+		return routeService.viewRouteById(routeId);
+		
+		
+	}
+	
+	//-----vehicle----
+	@PostMapping("/addVehicle")
+	public String saveVehicle( @RequestBody VehicleDto vehicleDto) {
+		return vehicleService.addVehicle( vehicleDto);
+	}
+	
+	@GetMapping("/vehicle/{id}")
+	public VehicleDto getVehicleById(@PathVariable int id) {
+		return vehicleService.viewVehicleById(id);
+	}
+	
+	@GetMapping("/allVehicles")
+	public List<VehicleDto> getAllVehicles() {
+		List<VehicleDto> vehicles=  vehicleService.viewAll();
+		return vehicles;
+	}
+	
+	@PutMapping("/vehicle/{id}")
+	public String updateVehicle(@PathVariable int id, @RequestBody VehicleDto vehicleDto) {
+		return vehicleService.modifyVehicleById(id, vehicleDto);
+	}
+	
+	@DeleteMapping("/vehicle/{id}")
+	public String updateVehicle(@PathVariable int id ) {
+		return vehicleService.deleteVehicle(id);
+	} 
+}

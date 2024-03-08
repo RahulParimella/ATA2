@@ -1,0 +1,69 @@
+package com.example.ata.serviceimpl;
+
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.ata.dto.BookingDto;
+import com.example.ata.exception.BookingNotFoundException;
+import com.example.ata.model.Booking;
+import com.example.ata.repo.BookingRepo;
+import com.example.ata.service.BookingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+@Service
+public class BookingImpl implements BookingService{
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private BookingRepo bookingRepo;
+
+	@Override
+	public BookingDto saveBooking(BookingDto bookingDto) {
+		// TODO Auto-generated method stub
+		Booking booking = modelMapper.map(bookingDto, Booking.class);
+		Booking savedbooking = bookingRepo.save(booking);
+		BookingDto dto = modelMapper.map(savedbooking, BookingDto.class);
+		
+		return dto;
+	}
+
+	@Override
+	public String cancelBooking(int bookingId) {
+		// TODO Auto-generated method stub
+		 Optional<Booking> deletebooking = bookingRepo.findById(bookingId);
+		 if(deletebooking.isPresent()) {
+			 bookingRepo.delete(deletebooking.get());
+			 return "deleted succesfully";
+		 }
+		 else {
+				throw new BookingNotFoundException("booking with" + bookingId + "not found");
+			}
+		
+	}
+
+	@Override
+	public String viewBookingStatus(int bookingId) {
+	    Optional<Booking> bookingOptional = bookingRepo.findById(bookingId);
+	    if (bookingOptional.isPresent()) {
+	        Booking booking = bookingOptional.get();
+	        BookingDto bookingDto = modelMapper.map(booking, BookingDto.class);
+	        // Convert BookingDto to JSON string
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        try {
+	            return objectMapper.writeValueAsString(bookingDto);
+	        } catch (JsonProcessingException e) {
+	            // Handle JSON serialization error
+	            e.printStackTrace(); // Print stack trace for debugging
+	            throw new RuntimeException("Error converting BookingDto to JSON string");
+	        }
+	    } else {
+	        throw new BookingNotFoundException("Booking not found with id: " + bookingId);
+	    }
+	}
+
+}

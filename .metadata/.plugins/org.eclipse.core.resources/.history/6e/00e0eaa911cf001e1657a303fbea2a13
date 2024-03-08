@@ -1,0 +1,17 @@
+package com.example.ata.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.ata.dto.BookingDto;
+
+@Service
+public interface BookingService {
+	
+	BookingDto saveBooking(BookingDto bookingDto);
+	
+	String cancelBooking(int bookingId);
+	
+	String viewBookingStatus(int bookingId);
+
+
+}

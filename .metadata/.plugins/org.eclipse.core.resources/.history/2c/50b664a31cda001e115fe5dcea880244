@@ -1,0 +1,95 @@
+package com.example.demo.serviceimpl;
+
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
+@Component
+public class JwtService {
+    
+    // Method to generate a JWT token for a given username
+    public String generateToken(String username) {
+        // Step 1: Create an empty map of claims
+        Map<String, Object> claims = new HashMap<>();
+        // Step 2: Call createToken method to generate the token and return it
+        return "token:" + createToken(claims, username);
+    }
+
+    // Private method to create a JWT token
+    private String createToken(Map<String, Object> claims, String username) {
+        // Step 1: Build the JWT token using Jwts.builder()
+        return Jwts.builder()
+                // Step 2: Set the claims, subject (username), issuedAt, expiration, and sign the token
+                .setClaims(claims)
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(getSecKey(), SignatureAlgorithm.HS256).compact();
+    }
+
+    // Private method to get the secret key for signing the JWT
+    private Key getSecKey() {
+        // Step 1: Decode the base64 encoded secret key string
+        byte[] keybytes = Decoders.BASE64.decode("3273357638792F423F4528482B4D6251655368566D597133743677397A244326");
+        // Step 2: Convert the decoded key into a Key object
+        return Keys.hmacShaKeyFor(keybytes);
+    }
+
+    // Method to extract the username from a JWT token
+    public String extractUsername(String token) {
+        // Step 1: Call extractClaim method passing Claims::getSubject as the claimsResolver function
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    // Generic method to extract a claim from a JWT token
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        // Step 1: Extract all claims from the token
+        final Claims claims = extractAllClaims(token);
+        // Step 2: Apply the provided function to retrieve the desired claim
+        return claimsResolver.apply(claims);
+    }
+
+    // Private method to extract all claims from a JWT token
+    private Claims extractAllClaims(String token) {
+        // Step 1: Parse the token and extract its body
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSecKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    // Method to validate a JWT token against a UserDetails object
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        // Step 1: Extract the username from the token
+        final String username = extractUsername(token);
+        // Step 2: Check if the extracted username matches the username in the UserDetails object
+        // Step 3: Check if the token is expired
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    // Private method to check if a JWT token is expired
+    private Boolean isTokenExpired(String token) {
+        // Step 1: Extract the expiration date from the token
+        // Step 2: Check if the expiration date is before the current date
+        return extractExpiration(token).before(new Date());
+    }
+
+    // Method to extract the expiration date from a JWT token
+    public Date extractExpiration(String token) {
+        // Step 1: Call extractClaim method passing Claims::getExpiration as the claimsResolver function
+        return extractClaim(token, Claims::getExpiration);
+    }
+}

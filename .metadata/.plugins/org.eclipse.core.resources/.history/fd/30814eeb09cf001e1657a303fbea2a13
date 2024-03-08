@@ -1,0 +1,5 @@
+package com.example.ata.dto;
+
+public class BookingDto {
+
+}

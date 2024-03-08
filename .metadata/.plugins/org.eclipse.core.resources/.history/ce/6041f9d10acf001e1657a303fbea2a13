@@ -1,0 +1,7 @@
+package com.example.ata.model;
+
+import java.util.Date;
+
+public class Booking {
+	
+}

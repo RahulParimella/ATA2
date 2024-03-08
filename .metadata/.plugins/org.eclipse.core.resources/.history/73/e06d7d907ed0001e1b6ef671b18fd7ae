@@ -1,0 +1,15 @@
+package com.example.routeservice.service;
+
+
+import com.example.routeservice.dto.RouteDto;
+
+public interface RouteService {
+	RouteDto add(RouteDto routeDto);
+
+	String updateRoute(int driverNo, RouteDto routeDto);
+
+	String deleteRoute(int driverNo);
+
+	RouteDto viewRoute(int driverNo);
+
+}

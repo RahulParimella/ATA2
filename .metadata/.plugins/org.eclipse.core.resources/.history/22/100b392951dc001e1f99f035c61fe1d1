@@ -1,0 +1,15 @@
+package com.example.apigateway.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.example.apigateway.feign.FeignClient; // Import your FeignClient class
+
+@Configuration
+public class AppConfig {
+    
+    @Bean
+    public FeignClient client() {
+        return new FeignClient(); // Instantiate and return the FeignClient bean
+    }
+}

@@ -1,0 +1,24 @@
+//package com.example.apigateway;
+//
+//import org.springframework.cloud.gateway.route.RouteLocator;
+//
+//import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//
+//@Configuration
+//public class GatewayConfig {
+//
+//    @Bean
+//    RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
+//	        return builder.routes()
+//	        		 .route("driver-service-route", r -> r
+//	                         .path("/api/driver/**")
+//	                         .uri("http://localhost:8086"))
+//	                 // Route for Booking microservice
+//	                 .route("booking-service-route", r -> r
+//	                         .path("/api/booking/**")
+//	                         .uri("http://localhost:8085"))
+//	                 .build();
+//	    }
+//}

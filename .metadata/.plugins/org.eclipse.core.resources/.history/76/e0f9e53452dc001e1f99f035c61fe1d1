@@ -1,0 +1,48 @@
+package com.example.apigateway.util;
+
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
+@Service
+public class JwtUtil {
+	 // Method to generate a JWT token for a given username
+	//generate token method
+    public String generateToken(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        return "token:"+createToken(claims, username);
+    }
+
+    // Private method to create a JWT token
+    //register method
+    private String createToken(Map<String, Object> claims, String username) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                .signWith(getSecKey(), SignatureAlgorithm.HS256).compact();
+    }
+ // Private method to get the secret key for signing the JWT
+    private Key getSecKey() {
+        byte[] keybytes = Decoders.BASE64.decode("3273357638792F423F4528482B4D6251655368566D597133743677397A244326");
+        return Keys.hmacShaKeyFor(keybytes);
+    }
+    
+    //validate token method
+    public void validateToken(final String token){
+    	Jws<Claims> claimsJws =Jwts.parserBuilder().setSigningKey(getSecKey()).build().parseClaimsJws(token);
+		
+    	
+    }
+}

@@ -1,0 +1,71 @@
+package com.javatechie.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.registration.dto.UserRegistrationDto;
+import com.example.demo.registration.model.UserRegistration;
+import com.example.demo.registration.modelmapper.RegistrationMapper;
+import com.javatechie.dto.UserCredentialDto;
+import com.javatechie.entity.UserCredential;
+import com.javatechie.repository.UserCredentialRepository;
+
+@Service
+public class AuthService {
+
+	@Autowired
+	private UserCredentialRepository repository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	
+	@Autowired
+	private JwtService jwtService;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+
+	
+	 @Override
+	    public String save(UserRegistrationDto userDto) {
+
+	        List<UserRegistration> userList = repository.findAll();
+	        List<UserRegistrationDto> userDtoList = userList.stream()
+	                .map(RegistrationMapper::mapToRegistrationDto)
+	                .collect(Collectors.toList());
+
+	        if (userDtoList != null) {
+	            for (UserRegistrationDto user : userDtoList) {
+	                if (user.getName().equals(userDto.getName())) {
+	                    flag = true;
+	                } else {
+	                    flag = false;
+	                }
+	            }
+
+	            if (flag) {
+	                return "User already exists";
+	            } else {
+	                userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+	                repository.save(RegistrationMapper.mapToRegistration(userDto));
+	                return "Saved User";
+	            }
+	        }
+	        return "Unable to process registration";
+	    }
+	public String generateToken(String username) {
+		return jwtService.generateToken(username);
+	}
+
+	public void validateToken(String token) {
+		jwtService.validateToken(token);
+	}
+
+	
+
+}

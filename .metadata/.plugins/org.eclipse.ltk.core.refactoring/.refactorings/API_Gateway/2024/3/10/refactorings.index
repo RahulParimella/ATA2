@@ -1,0 +1,10 @@
+1709630872241	Delete element
+1709637414199	Delete element
+1709637420994	Delete element
+1709793717946	Rename type 'Authenticationfilter'
+1709794985336	Rename type 'AppCOnfig'
+1709795585465	Rename type 'JwtService'
+1709820872825	Rename package 'com.example.apigateway.config'
+1709878957705	Rename type 'DriverException'
+1709878970445	Rename type 'DriverNotFoundException'
+1709878988032	Rename type 'DriverExceptionController'

@@ -1,0 +1,13 @@
+spring.application.name=API-Gateway
+server.port=9191
+management.endpoints.web.exposure.include=*
+
+# Route for Driver microservice
+spring.cloud.gateway.routes[0].id=driver-service-route
+spring.cloud.gateway.routes[0].uri=http://localhost:8086
+spring.cloud.gateway.routes[0].predicates[0]=Path=/api/driver/**
+
+# Route for Booking microservice
+spring.cloud.gateway.routes[1].id=booking-service-route
+spring.cloud.gateway.routes[1].uri=http://localhost:8085
+spring.cloud.gateway.routes[1].predicates[0]=Path=/api/booking/**

@@ -1,0 +1,21 @@
+package com.example.ata.model;
+
+import java.util.Date;
+
+public class Booking {
+	private int BookingId;
+	private Date BookingDate;
+	private Date JourneyDate;
+	private String Source;
+	private String Destination;
+	private String Boardingpoint;
+	private String DropingPoint;
+	private int NoOfPassengers;
+	private boolean status;
+
+
+
+
+	
+
+}

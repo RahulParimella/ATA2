@@ -1,0 +1,42 @@
+package com.example.ata.model;
+
+import java.util.Date;
+
+public class Booking {
+	private Date journeyDate;
+	private String source;
+	private String destination;
+	private String vehicleName;
+	public Booking(Date journeyDate, String source, String destination, String vehicleName) {
+		super();
+		this.journeyDate = journeyDate;
+		this.source = source;
+		this.destination = destination;
+		this.vehicleName = vehicleName;
+	}
+	public Date getJourneyDate() {
+		return journeyDate;
+	}
+	public void setJourneyDate(Date journeyDate) {
+		this.journeyDate = journeyDate;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
+	public String getDestination() {
+		return destination;
+	}
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+	public String getVehicleName() {
+		return vehicleName;
+	}
+	public void setVehicleName(String vehicleName) {
+		this.vehicleName = vehicleName;
+	}
+	
+}

@@ -1,0 +1,31 @@
+package com.example.ata.dto;
+
+import java.util.Date;
+
+public class BookingDto {
+	private int bookingId;
+	private Date bookingDate;
+	private Date journeyDate;
+	private String source;
+	private String destination;
+	private String boardingpoint;
+	private String dropingPoint;
+	private int noOfPassengers;
+	private boolean status;
+	public BookingDto(int bookingId, Date bookingDate, Date journeyDate, String source, String destination,
+			String boardingpoint, String dropingPoint, int noOfPassengers, boolean status) {
+		super();
+		this.bookingId = bookingId;
+		this.bookingDate = bookingDate;
+		this.journeyDate = journeyDate;
+		this.source = source;
+		this.destination = destination;
+		this.boardingpoint = boardingpoint;
+		this.dropingPoint = dropingPoint;
+		this.noOfPassengers = noOfPassengers;
+		this.status = status;
+	}
+	
+	
+	
+}

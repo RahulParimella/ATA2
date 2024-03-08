@@ -1,0 +1,35 @@
+package com.example.demo.service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+
+@Service
+public class JwtService {
+
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    // Method to validate a JWT token
+    public boolean validateToken(String token) {
+        try {
+            // Parse the token and extract claims
+            Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+            // Check if the token is expired
+            Date expirationDate = claims.getExpiration();
+            return expirationDate.after(new Date());
+        } catch (Exception e) {
+            // Token validation failed
+            return false;
+        }
+    }
+
+    // Method to extract the username from a JWT token
+    public String extractUsername(String token) {
+        // Parse the token and extract the subject (username)
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    }
+}

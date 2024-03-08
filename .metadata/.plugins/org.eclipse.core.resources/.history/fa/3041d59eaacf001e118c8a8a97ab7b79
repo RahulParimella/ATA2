@@ -1,0 +1,62 @@
+package com.example.ata.serviceimpl;
+
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.ata.dto.BookingDto;
+import com.example.ata.exception.BookingNotFoundException;
+import com.example.ata.model.Booking;
+import com.example.ata.repo.BookingRepo;
+import com.example.ata.service.BookingService;
+@Service
+public class BookingImpl implements BookingService{
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private BookingRepo bookingRepo;
+
+	@Override
+	public BookingDto saveBooking(BookingDto bookingDto) {
+		// TODO Auto-generated method stub
+		Booking booking = modelMapper.map(bookingDto, Booking.class);
+		Booking savedbooking = bookingRepo.save(booking);
+		BookingDto dto = modelMapper.map(savedbooking, BookingDto.class);
+		
+		return dto;
+	}
+
+	@Override
+	public String cancelBooking(int bookingId) {
+		// TODO Auto-generated method stub
+		 Optional<Booking> deletebooking = bookingRepo.findById(bookingId);
+		 if(deletebooking.isPresent()) {
+			 bookingRepo.delete(deletebooking.get());
+			 return "deleted succesfully";
+		 }
+		 else {
+				throw new BookingNotFoundException("booking with" + bookingId + "not found");
+			}
+		
+	}
+
+	@Override
+	public BookingDto viewBookingStatus(int bookingId) {
+		// TODO Auto-generated method stub
+		 Booking booking = bookingRepo.findById(bookingId).orElse(null);
+	        if (booking != null) {
+	            return new BookingDto(booking.getStatus());
+	        } else {
+	            // Handle case where booking is not found
+	            throw new BookingNotFoundException("Booking not found with ID: " + bookingId);
+	        }
+	}
+
+	
+
+
+}

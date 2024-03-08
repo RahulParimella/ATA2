@@ -1,0 +1,14 @@
+package com.javatechie.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.javatechie.dto.UserCredentialDto;
+import com.javatechie.entity.UserCredential;
+
+public interface UserCredentialRepository  extends JpaRepository<UserCredential,Integer> {
+
+	void save(UserCredentialDto userCredentialDto);
+  
+
+
+}

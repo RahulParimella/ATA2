@@ -1,0 +1,10 @@
+package com.javatechie.Exception;
+
+public class IdentityuNotFoundException extends RuntimeException {
+
+	public IdentityuNotFoundException(String message) {
+		super(message);
+	}
+
+
+}
