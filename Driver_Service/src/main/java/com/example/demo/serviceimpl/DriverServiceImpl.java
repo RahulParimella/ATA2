@@ -68,7 +68,7 @@ public class DriverServiceImpl implements DriverService {
 		Optional<Driver> driver =driverRepo.findById(driverNo);
 		if(driver.isPresent()) {
 			Driver c=driver.get();
-			DriverDto driverdto =modelMapper.map(driver, DriverDto.class);
+			DriverDto driverdto =modelMapper.map(c, DriverDto.class);
 		
 			
 			return driverdto;
